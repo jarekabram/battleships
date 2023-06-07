@@ -3,7 +3,7 @@
 <MudPaper @onclick="@(OnClick)" Style="width:100%">
   @if (ShowLabel)
   {
-    <MudText Class="d-flex justify-content-center">@($"{X}:{Y}")</MudText>
+    <MudText Class="d-flex justify-content-center">@($"{Board[X, Y]}")</MudText>
   }
   else
   {
@@ -21,11 +21,14 @@
 
   private bool ShowLabel { get; set; }
 
+  [Parameter]
+  public string[,] Board { get; set; }
+
   private async Task OnClick(MouseEventArgs mouseEventArgs)
   {
     ShowLabel = true;
-    Console.WriteLine();
     await InvokeAsync(StateHasChanged);
   }
+
 
 }

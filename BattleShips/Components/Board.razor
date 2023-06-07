@@ -32,7 +32,7 @@
         @for (var yIndex = 0; yIndex < _numbers.Count; yIndex++)
         {
           <td>
-            <BoardPlayableCell X="@xIndex" Y="@yIndex" ></BoardPlayableCell>
+            <BoardPlayableCell X="@xIndex" Y="@yIndex" Board="_board"></BoardPlayableCell>
           </td>
         }
       </tr>
@@ -49,4 +49,87 @@
     .Select(x => Convert.ToChar(x).ToString())
     .ToList();
   readonly List<int> _numbers = Enumerable.Range(1, 10).ToList();
+
+
+  private Random _random = new();
+  private string[,] _board = new string[10, 10];
+  
+  protected override void OnInitialized()
+  {
+    InitializeBoard();
+
+    // Place ships
+    PlaceShip(5); // Place Battleship
+    PlaceShip(4); // Place Destroyer 1
+    PlaceShip(4); // Place Destroyer 2
+  }
+
+  private void InitializeBoard()
+  {
+  // Initialize the board to be empty
+    for (var xIndex = 0; xIndex < 10; xIndex++)
+    {
+      for (var yIndex = 0; yIndex < 10; yIndex++)
+      {
+        _board[xIndex, yIndex] = "🌊";
+      }
+    }
+  }
+
+  void PlaceShip(int shipSize)
+  {
+    var isHorizontal = _random.Next(2) == 0;
+
+    while (true)
+    {
+      int x, y;
+      if (isHorizontal)
+      {
+        x = _random.Next(10 - shipSize + 1);
+        y = _random.Next(10);
+      }
+      else
+      {
+        x = _random.Next(10);
+        y = _random.Next(10 - shipSize + 1);
+      }
+
+      var allCellsEmpty = true;
+      for (var i = 0; i < shipSize; i++)
+      {
+        if (isHorizontal)
+        {
+          if (_board[y, x + i] == "🌊")
+          {
+            continue;
+          }
+          allCellsEmpty = false;
+          break;
+        }
+        if (_board[y + i, x] == "🌊")
+        {
+          continue;
+        }
+        allCellsEmpty = false;
+        break;
+      }
+
+      if (!allCellsEmpty) continue;
+      {
+        for (var i = 0; i < shipSize; i++)
+        {
+          if (isHorizontal)
+          {
+            _board[y, x + i] = "💥";
+          }
+          else
+          {
+            _board[y + i, x] = "💥";
+          }
+        }
+
+        break;
+      }
+    }
+  }
 }

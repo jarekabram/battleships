@@ -1,0 +1,31 @@
+﻿@inherits BoardCell
+
+<MudPaper @onclick="@(OnClick)" Style="width:100%">
+  @if (ShowLabel)
+  {
+    <MudText Class="d-flex justify-content-center">@($"{X}:{Y}")</MudText>
+  }
+  else
+  {
+    <MudText>&nbsp;</MudText>
+  }
+</MudPaper>
+
+
+@code {
+
+  [Parameter]
+  public int X { get; set; }
+  [Parameter]
+  public int Y { get; set; }
+
+  private bool ShowLabel { get; set; }
+
+  private async Task OnClick(MouseEventArgs mouseEventArgs)
+  {
+    ShowLabel = true;
+    Console.WriteLine();
+    await InvokeAsync(StateHasChanged);
+  }
+
+}

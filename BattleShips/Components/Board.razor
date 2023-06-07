@@ -1,0 +1,52 @@
+﻿@namespace BattleShips
+<h3>Board</h3>
+
+<div style="width: 100%">
+  <table class="styled-table">
+    <thead>
+    <tr>
+      <th></th>
+      @foreach (var number in _numbers)
+      {
+        <th>
+            <BoardHeaderCell>
+              <ChildContent>
+                @number
+              </ChildContent>
+            </BoardHeaderCell>
+        </th>
+      }
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var (item, xIndex) in _letters.Select((x, i) => (x, i)))
+    {
+      <tr>
+        <td>
+          <BoardRowCell>
+            <ChildContent>
+              @item
+            </ChildContent>
+          </BoardRowCell>
+        </td>
+        @for (var yIndex = 0; yIndex < _numbers.Count; yIndex++)
+        {
+          <td>
+            <BoardPlayableCell X="@xIndex" Y="@yIndex" ></BoardPlayableCell>
+          </td>
+        }
+      </tr>
+    }
+    </tbody>
+  </table>
+</div>
+
+<MudButton>Start</MudButton>
+
+@code {
+
+  readonly List<string> _letters = Enumerable.Range(65, 10)
+    .Select(x => Convert.ToChar(x).ToString())
+    .ToList();
+  readonly List<int> _numbers = Enumerable.Range(1, 10).ToList();
+}

@@ -24,11 +24,13 @@
   [Parameter]
   public string[,] Board { get; set; }
 
+  [Parameter]
+  public EventHandler BoardClicked { get; set; }
+
   private async Task OnClick(MouseEventArgs mouseEventArgs)
   {
     ShowLabel = true;
+    BoardClicked.Invoke(this, EventArgs.Empty);
     await InvokeAsync(StateHasChanged);
   }
-
-
 }
